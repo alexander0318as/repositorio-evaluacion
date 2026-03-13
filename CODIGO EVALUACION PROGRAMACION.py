@@ -1,38 +1,75 @@
 def sistema_control_acceso():
-    print("--- Sistema de Control de Acceso al Edificio ---")
-    
-    # Entrada de datos
-    try:
-        edad = int(input("Ingrese la edad: "))
-        tiene_id = input("¿Tiene identificación? (si/no): ").lower().strip() == "si"
-        esta_registrado = input("¿Está registrado en el sistema? (si/no): ").lower().strip() == "si"
+    # --- ENCABEZADO ---
+    print("==========================================")
+    print("   SISTEMA DE SEGURIDAD BIOMÉTRICA v2.0   ")
+    print("==========================================\n")
+
+    # --- VALIDACIÓN DE LA EDAD (Solo números) ---
+    # Usamos un bucle infinito 'while True' que solo se rompe ('break') cuando el dato es válido
+    while True:
+        entrada_edad = input("Entrada -> Ingrese la edad: ")
         
-        # Evaluación de las reglas del sistema
-        # Regla base: Debe tener ID y estar registrado
-        if tiene_id and esta_registrado:
-            
-            # Regla específica por edad
-            if edad < 18:
-                acompanado = input("¿Está acompañado por un adulto? (si/no): ").lower().strip() == "si"
-                
-                if acompanado:
-                    print("\n✅ ACCESO CONCEDIDO: Menor de edad con acompañante autorizado.")
-                else:
-                    print("\n❌ ACCESO DENEGADO: Los menores de edad deben estar acompañados.")
-            
-            else:
-                print("\n✅ ACCESO CONCEDIDO: Usuario adulto autorizado.")
-                
+        # .isdigit() verifica si el texto escrito son solo números (0-9)
+        if entrada_edad.isdigit():
+            edad = int(entrada_edad) # Convertimos el texto a número entero
+            break # Salimos del bucle porque el dato es correcto
         else:
-            # Si falta ID o Registro, no importa la edad
-            motivo = ""
-            if not tiene_id: motivo += "- Falta identificación. "
-            if not esta_registrado: motivo += "- No está en la base de datos."
+            print("⚠️ ERROR: La edad debe ser un número entero (ej: 25). Inténtelo de nuevo.")
+
+    # --- VALIDACIÓN DE IDENTIFICACIÓN (Solo letras y si/no) ---
+    while True:
+        # .lower() convierte a minúsculas, .strip() quita espacios accidentales
+        tiene_id = input("Entrada -> ¿Tiene identificación? (si/no): ").lower().strip()
+        
+        # Verificamos que sea solo texto (.isalpha()) y que sea 'si' o 'no'
+        if tiene_id.isalpha() and tiene_id in ["si", "no"]:
+            # Convertimos la respuesta en un valor Booleano (True o False) para lógica interna
+            tiene_id_bool = (tiene_id == "si")
+            break
+        else:
+            print("⚠️ ERROR: Solo se permite 'si' o 'no' (sin números ni símbolos).")
+
+    # --- VALIDACIÓN DE REGISTRO (Solo letras y si/no) ---
+    while True:
+        esta_registrado = input("Entrada -> ¿Está registrado en el sistema? (si/no): ").lower().strip()
+        
+        if esta_registrado.isalpha() and esta_registrado in ["si", "no"]:
+            esta_registrado_bool = (esta_registrado == "si")
+            break
+        else:
+            print("⚠️ ERROR: Responda únicamente 'si' o 'no'.")
+
+    # --- PROCESAMIENTO DE REGLAS DE NEGOCIO ---
+    
+    # 1. Verificación base: Sin ID o sin Registro no entra nadie, sin importar la edad.
+    if tiene_id_bool and esta_registrado_bool:
+        
+        # 2. Verificación de seguridad para menores
+        if edad < 18:
+            print("\n[INFO] Detectado menor de edad. Verificando protocolo de acompañamiento...")
             
-            print(f"\n❌ ACCESO DENEGADO: {motivo}")
+            while True:
+                acompanado = input("Entrada -> ¿Está acompañado por un adulto? (si/no): ").lower().strip()
+                if acompanado.isalpha() and acompanado in ["si", "no"]:
+                    break
+                else:
+                    print("⚠️ ERROR: Responda 'si' o 'no'.")
+            
+            # Resultado final para menores
+            if acompanado == "si":
+                print("\n✅ ACCESO CONCEDIDO: Menor autorizado con acompañante.")
+            else:
+                print("\n❌ ACCESO DENEGADO: Los menores no pueden entrar solos.")
+        
+        # 3. Resultado para adultos autorizados
+        else:
+            print("\n✅ ACCESO CONCEDIDO: Usuario adulto verificado correctamente.")
+            
+    else:
+        # Mensaje de rechazo si faltan requisitos básicos
+        print("\n❌ ACCESO DENEGADO: No cumple con los requisitos mínimos (ID o Registro).")
 
-    except ValueError:
-        print("\n⚠️ ERROR: Por favor, ingrese un número válido para la edad.")
-
-# Ejecutar el programa
-sistema_control_acceso()
+# --- INVOCACIÓN DEL PROGRAMA ---
+# Esto hace que el código empiece a correr
+if __name__ == "__main__":
+    sistema_control_acceso()
