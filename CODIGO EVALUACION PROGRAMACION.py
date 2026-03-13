@@ -67,7 +67,7 @@ def sistema_control_acceso():
             
     else:
         # Mensaje de rechazo si faltan requisitos básicos
-        print("\n❌ ACCESO DENEGADO: No cumple con los requisitos mínimos (ID o Registro).")
+        print("\n❌ ACCESO DENEGADO: No cumple con los requisitos mínimos (ID y Registro).")
 
 # --- INVOCACIÓN DEL PROGRAMA ---
 # Esto hace que el código empiece a correr
