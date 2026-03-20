@@ -49,7 +49,7 @@ def sistema_control_acceso():
             print("\n[INFO] Detectado menor de edad. Verificando protocolo de acompañamiento...")
             
             while True:
-                acompanado = input("Entrada -> ¿Está acompañado por un adulto? (si/no): ").lower().strip()
+                acompanado = input("si/no): ").lower().strip()
                 if acompanado.isalpha() and acompanado in ["si", "no"]:
                     break
                 else:
@@ -60,7 +60,8 @@ def sistema_control_acceso():
                 print("\n✅ ACCESO CONCEDIDO: Menor autorizado con acompañante.")
             else:
                 print("\n❌ ACCESO DENEGADO: Los menores no pueden entrar solos.")
-        
+        TO
+    
         # 3. Resultado para adultos autorizados
         else:
             print("\n✅ ACCESO CONCEDIDO: Usuario adulto verificado correctamente.")
